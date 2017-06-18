@@ -1,0 +1,15 @@
+# Maven
+target/
+*.ser
+*.ec
+
+# IntelliJ Idea
+.idea/
+out/
+*.ipr
+*.iws
+*.iml
+
+
+# OS X
+.DS_Store
