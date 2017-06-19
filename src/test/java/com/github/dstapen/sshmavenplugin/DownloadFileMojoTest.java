@@ -18,7 +18,7 @@ public class DownloadFileMojoTest extends AbstractSSHContainer {
         UploadFileMojo sut = new UploadFileMojo("localhost", 2222, "root", true,
                 "root", 1_000,
                 pathToSmallSample(),
-                "little");
+                "little", false);
         sut.execute();
     }
 
@@ -27,7 +27,7 @@ public class DownloadFileMojoTest extends AbstractSSHContainer {
         File tempFile = File.createTempFile("downloaded_little", ".tmp");
         tempFile.deleteOnExit();
         DownloadFileMojo sut = new DownloadFileMojo("localhost", 2222, "root", true,
-                "root", 1000, "little", tempFile.getAbsolutePath());
+                "root", 1000, "little", tempFile.getAbsolutePath(), false);
         sut.execute();
     }
 

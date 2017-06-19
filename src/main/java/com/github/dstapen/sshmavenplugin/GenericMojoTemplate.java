@@ -29,7 +29,14 @@ abstract class GenericMojoTemplate extends AbstractMojo {
     private static final String TRUST_PARAMETER = "trust";
     private static final String PASSWORD_PARAMETER = "password";
     private static final String TIMEOUT_PARAMETER = "timeout";
+    private static final String SKIP_PARAMETER = "skip";
 
+
+    /**
+     * Use <code>-Dssh.skip=true</code> to skip all Mojo execution
+     */
+    @Parameter(name = SKIP_PARAMETER, defaultValue = "false", alias = "ssh.skip")
+    boolean skip;
 
     @Parameter(name = HOST_PARAMETER)
     String host;
@@ -53,13 +60,15 @@ abstract class GenericMojoTemplate extends AbstractMojo {
     public GenericMojoTemplate() { // for the mojo
     }
 
-    GenericMojoTemplate(String host, Integer port, String user, Boolean trust, String password, Integer timeout) { // for testing reasons
+    GenericMojoTemplate(String host, Integer port, String user, Boolean trust,
+                        String password, Integer timeout, boolean skip) { // for testing reasons
         this.host = host;
         this.port = port;
         this.user = user;
         this.trust = trust;
         this.password = password;
         this.timeout = timeout;
+        this.skip = skip;
     }
 
     @Override
@@ -68,11 +77,15 @@ abstract class GenericMojoTemplate extends AbstractMojo {
         // enable SLF4j logging
         StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
 
-        validateParameters();
-        try (SessionTenant sessionTenant = connect(host(), port(), user(), password(), trust())) {
-            perform(sessionTenant);
-        } catch (JSchException e) {
-            throw new ConnectivityProblemException(e.getMessage(), e);
+        if (!skip) {
+            validateParameters();
+            try (SessionTenant sessionTenant = connect(host(), port(), user(), password(), trust())) {
+                perform(sessionTenant);
+            } catch (JSchException e) {
+                throw new ConnectivityProblemException(e.getMessage(), e);
+            }
+        } else {
+            LOG.info("Skipping...");
         }
     }
 
