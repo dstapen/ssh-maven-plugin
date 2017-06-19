@@ -1,4 +1,3 @@
-
 build requirements
 ------------------
 
@@ -26,61 +25,56 @@ command line
 in your pom file
 
 ```xml
+    <properties>
+        <skip.turnaround>true</skip.turnaround>
+    </properties>
+```
+
+declare a profile
+
+```xml
     <profiles>
         <profile>
             <id>deploy-turnaround</id>
             <activation>
-                <property><name>env.MY_HOST</name></property>
+                <property>
+                    <name>env.MY_HOST</name>
+                </property>
             </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.github.dstapen</groupId>
-                        <artifactId>ssh-maven-plugin</artifactId>
-                        <version>0.0.1-SNAPSHOT</version>
-                        <configuration>
-                            <host>${env.MY_HOST}</host>
-                            <user>USERNAME</user>
-                            <password>SECRET</password>
-                            <trust>true</trust>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>shutdown-some-service</id>
-                                <goals>
-                                    <goal>execute</goal>
-                                </goals>
-                                <phase>install</phase>
-                                <configuration>
-                                    <command>systemctl stop some.service</command>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>upload-test</id>
-                                <goals>
-                                    <goal>upload</goal>
-                                </goals>
-                                <phase>install</phase>
-                                <configuration>
-                                    <from>YOUR_JAR</from>
-                                    <to>/path/to/my.jar</to>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>start-some-service</id>
-                                <goals>
-                                    <goal>execute</goal>
-                                </goals>
-                                <phase>install</phase>
-                                <configuration>
-                                    <command>systemctl start some.service</command>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
+            <properties>
+                <skip.turnaround>false</skip.turnaround>
+            </properties>
         </profile>
     </profiles>
 ```
 
+straightforward plugin use 
+
+```xml
+    <build>
+            <plugins>
+                <plugin>
+                    <groupId>com.github.dstapen</groupId>
+                    <artifactId>ssh-maven-plugin</artifactId>
+                    <version>0.0.1-SNAPSHOT</version>
+                    <configuration>
+                        <skip>${skip.turnaround}</skip>
+                        <host>${env.MY_HOST}</host>
+                        <user>USERNAME</user>
+                        <password>PASSWORD</password>
+                        <trust>true</trust>
+                        <command>ls -lah</command>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>awesome</id>
+                            <phase>install</phase>
+                            <goals>
+                                <goal>execute</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+```
