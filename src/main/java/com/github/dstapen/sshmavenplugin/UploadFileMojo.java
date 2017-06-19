@@ -38,8 +38,8 @@ public class UploadFileMojo extends GenericMojoTemplate {
     }
 
     UploadFileMojo(String host, Integer port, String user, Boolean trust,
-                   String password, Integer timeout, String from, String to) { // for testing reasons
-        super(host, port, user, trust, password, timeout);
+                   String password, Integer timeout, String from, String to, boolean skip) { // for testing reasons
+        super(host, port, user, trust, password, timeout, skip);
         this.from = from;
         this.to = to;
     }

@@ -42,8 +42,8 @@ public class DownloadFileMojo extends GenericMojoTemplate {
     }
 
     DownloadFileMojo(String host, Integer port, String user, Boolean trust,
-                     String password, Integer timeout, String from, String to) { // for testing purpose
-        super(host, port, user, trust, password, timeout);
+                     String password, Integer timeout, String from, String to, boolean skip) { // for testing purpose
+        super(host, port, user, trust, password, timeout, skip);
         this.from = from;
         this.to = to;
     }

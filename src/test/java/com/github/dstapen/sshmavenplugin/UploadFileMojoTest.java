@@ -17,7 +17,7 @@ public class UploadFileMojoTest extends AbstractSSHContainer {
         UploadFileMojo sut = new UploadFileMojo("localhost", 2222, "root", true,
                 "root", 1_000,
                 pathToSmallSample(),
-                "little");
+                "little", false);
 
         sut.execute();
     }
