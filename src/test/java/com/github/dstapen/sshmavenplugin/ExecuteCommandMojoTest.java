@@ -11,11 +11,11 @@ public class ExecuteCommandMojoTest extends AbstractSSHContainer {
         TimeUnit.SECONDS.sleep(1L);
         ExecuteCommandMojo sut = ExecuteCommandMojo.class.newInstance();
         sut.host = "localhost";
-        sut.port = 2222;
+        sut.port = SSH_HOST_PORT;
         sut.trust = true;
         sut.timeout = 1000;
-        sut.user = "root";
-        sut.password = "root";
+        sut.user = SSH_USERNAME;
+        sut.password = SSH_PASSWORD;
         sut.command = "ls";
         sut.execute();
     }
