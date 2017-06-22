@@ -1,33 +1,29 @@
 package com.github.dstapen.sshmavenplugin;
 
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
-import static com.github.dstapen.sshmavenplugin.FilePathCreating.pathToSmallSample;
-
-public class DownloadFileMojoTest extends AbstractSSHContainer {
-
-    @Before
-    public void setUp() throws Exception {
-        TimeUnit.SECONDS.sleep(1L);
-
-
-        UploadFileMojo sut = new UploadFileMojo("localhost", 2222, "root", true,
-                "root", 1_000,
-                pathToSmallSample(),
-                "little", false);
-        sut.execute();
-    }
+@RunWith(Parameterized.class)
+public class DownloadFileMojoTest extends ParametrizedTransferTest {
 
     @Test
     public void testDownloadFileMojo() throws Exception {
+        TimeUnit.SECONDS.sleep(1L);
+
+        UploadFileMojo arrangement = new UploadFileMojo("localhost", SSH_HOST_PORT, SSH_USERNAME, true,
+                SSH_PASSWORD, 1_000,
+                local,
+                remote, false);
+        arrangement.execute();
+
         File tempFile = File.createTempFile("downloaded_little", ".tmp");
         tempFile.deleteOnExit();
-        DownloadFileMojo sut = new DownloadFileMojo("localhost", 2222, "root", true,
-                "root", 1000, "little", tempFile.getAbsolutePath(), false);
+        DownloadFileMojo sut = new DownloadFileMojo("localhost", SSH_HOST_PORT, SSH_USERNAME, true,
+                SSH_PASSWORD, 1000, remote, tempFile.getAbsolutePath(), false);
         sut.execute();
     }
 
