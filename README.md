@@ -78,3 +78,6 @@ straightforward plugin use
             </plugins>
         </build>
 ```
+
+
+This plugin has a dependency on and makes use of JSch - a java SSH2 implementation.

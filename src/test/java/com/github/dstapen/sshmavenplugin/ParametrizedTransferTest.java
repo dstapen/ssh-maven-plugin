@@ -18,7 +18,8 @@ public abstract class ParametrizedTransferTest extends AbstractSSHContainer {
     @Parameters
     public static Collection<Object[]> parameters() {
         return Arrays.asList(new String[][]{
-                {"/samples/big.txt", "big_one.txt"}, {"/samples/small.txt", "small_one.txt"}
+                {"/samples/big.txt", "big_one.txt"},
+                {"/samples/small.txt", "small_one.txt"}
         });
     }
 

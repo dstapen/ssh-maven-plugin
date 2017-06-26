@@ -30,10 +30,20 @@ public class ExecuteCommandMojo extends GenericMojoTemplate {
     private static final String FAILONERROR_PARAMETER = "failOnError";
 
     @Parameter(name = COMMAND_PARAMETER, required = true)
-    String command;
+    private String command;
 
     @Parameter(name = FAILONERROR_PARAMETER, defaultValue = "true")
-    Boolean failOnError;
+    private Boolean failOnError;
+
+    public ExecuteCommandMojo() {}
+
+    public ExecuteCommandMojo(String host, Integer port, String user,
+                              Boolean trust, String password, Integer timeout,
+                              boolean skip, String command, Boolean failOnError) {
+        super(host, port, user, trust, password, timeout, skip);
+        this.command = command;
+        this.failOnError = failOnError;
+    }
 
     @Override
     protected void perform(final SessionTenant sessionTenant) throws MojoExecutionException, MojoFailureException {
